@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
@@ -49,6 +49,8 @@
         linear-gradient(135deg, var(--bg1), var(--bg2));
       overflow-x:hidden;
       -webkit-tap-highlight-color:transparent;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     /* Background decor */
@@ -94,6 +96,10 @@
     .header{
       text-align:center;
       margin: 10px 0 18px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
     }
     .title{
       font-family:'Baloo 2',cursive;
@@ -122,6 +128,30 @@
       25%{ transform: translateY(-8px) rotate(-14deg); }
       75%{ transform: translateY(-4px) rotate(14deg); }
     }
+
+    /* Header stat chips (streak / total stars) */
+    .header-stats{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .stat-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.07);
+      box-shadow: 0 10px 25px rgba(0,0,0,.18);
+      font-weight: 900;
+      font-size: .95rem;
+      backdrop-filter: blur(10px);
+    }
+    .stat-chip.streak{ color: rgba(255,216,77,.98); }
+    .stat-chip.stars{ color: rgba(39,230,255,.98); }
+    .stat-chip .n{ color: var(--text); }
 
     /* Top controls */
     .tabs{
@@ -154,6 +184,11 @@
       color: var(--text);
       border-color: rgba(255,255,255,.30);
       background: linear-gradient(135deg, rgba(255,77,157,.24), rgba(39,230,255,.16));
+    }
+    .pill.challenge-on{
+      border-color: rgba(255,75,75,.5);
+      background: linear-gradient(135deg, rgba(255,75,75,.3), rgba(255,216,77,.18));
+      color: var(--text);
     }
 
     /* Grade chips */
@@ -260,6 +295,21 @@
       line-height:1.3;
     }
 
+    /* Mastered badge on word card */
+    .mastered-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:10px;
+      padding: 5px 12px;
+      border-radius:999px;
+      font-size:.85rem;
+      font-weight:900;
+      background: rgba(46,245,138,.15);
+      border: 1px solid rgba(46,245,138,.4);
+      color: rgba(46,245,138,.98);
+    }
+
     /* Buttons */
     .row{
       display:flex;
@@ -360,6 +410,40 @@
     @keyframes speakPulse{
       0%,100%{ transform: translateY(0) scale(1); }
       50%{ transform: translateY(-2px) scale(1.06); }
+    }
+
+    /* Challenge mode timer */
+    .challenge-bar{
+      display:none;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      margin-bottom: 14px;
+    }
+    .challenge-bar.active{ display:flex; }
+    .challenge-time{
+      font-family:'Baloo 2',cursive;
+      font-size:1.6rem;
+      font-weight:900;
+      padding: 8px 18px;
+      border-radius:999px;
+      background: rgba(255,75,75,.18);
+      border: 1px solid rgba(255,75,75,.4);
+      color: rgba(255,120,120,.98);
+      min-width: 90px;
+      text-align:center;
+    }
+    .challenge-time.low{
+      animation: shake .5s ease infinite;
+      background: rgba(255,75,75,.3);
+    }
+    .challenge-score{
+      font-weight:900;
+      padding: 8px 18px;
+      border-radius:999px;
+      background: rgba(46,245,138,.16);
+      border: 1px solid rgba(46,245,138,.4);
+      color: rgba(46,245,138,.98);
     }
 
     .dash-row{
@@ -536,6 +620,62 @@
       100%{ transform: scale(1) rotate(0deg); opacity:1; }
     }
 
+    /* Achievements / badges */
+    .badges-wrap{
+      margin-top: 16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: var(--r-lg);
+      padding: 14px 16px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.18);
+      backdrop-filter: blur(12px);
+    }
+    .badges-title{
+      font-weight:900;
+      color: var(--muted);
+      margin-bottom:10px;
+      text-align:center;
+      font-size:.95rem;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+    }
+    .badges-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:center;
+    }
+    .badge{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
+      width: 78px;
+      padding: 10px 6px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.12);
+      opacity:.35;
+      filter: grayscale(1);
+      transition: all .25s var(--ease);
+    }
+    .badge.earned{
+      opacity:1;
+      filter:none;
+      background: rgba(255,216,77,.10);
+      border-color: rgba(255,216,77,.4);
+      box-shadow: 0 10px 25px rgba(255,216,77,.12);
+    }
+    .badge .icon{ font-size:1.7rem; }
+    .badge .label{
+      font-size:.65rem;
+      font-weight:900;
+      text-align:center;
+      color: var(--muted);
+      line-height:1.15;
+    }
+    .badge.earned .label{ color: var(--text); }
+
     /* Word bank drawer */
     .bank-wrap{
       margin-top: 10px;
@@ -572,7 +712,7 @@
       backdrop-filter: blur(12px);
       box-shadow: 0 14px 40px rgba(0,0,0,.18);
     }
-    .word-bank.open{ max-height: 260px; padding: 14px; }
+    .word-bank.open{ max-height: 260px; padding: 14px; overflow-y:auto; }
     .word-bank-grid{
       display:flex; flex-wrap:wrap;
       gap:10px;
@@ -587,11 +727,21 @@
       color: rgba(234,242,255,.92);
       transition: transform .16s var(--ease), background .16s var(--ease), border-color .16s var(--ease);
       user-select:none;
+      position:relative;
     }
     .word-chip:hover{
       transform: translateY(-2px);
       background: rgba(39,230,255,.12);
       border-color: rgba(39,230,255,.35);
+    }
+    .word-chip.done{
+      border-color: rgba(46,245,138,.5);
+      background: rgba(46,245,138,.10);
+    }
+    .word-chip.done::after{
+      content:"✓";
+      margin-left:6px;
+      color: rgba(46,245,138,.95);
     }
 
     .footer{
@@ -618,12 +768,35 @@
       100%{ transform: translateY(115vh) rotate(720deg); opacity:0; }
     }
 
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+      transform: translateX(-50%) translateY(140%);
+      z-index: 10000;
+      background: linear-gradient(135deg, rgba(255,216,77,.95), rgba(255,77,157,.9));
+      color: #1a1330;
+      font-weight: 900;
+      padding: 14px 22px;
+      border-radius: 999px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      transition: transform .4s var(--ease);
+      max-width: 90vw;
+      text-align:center;
+    }
+    .toast.show{ transform: translateX(-50%) translateY(0); }
+
     /* Responsive */
     @media (max-width: 520px){
       .btn{ min-width: 110px; height: 50px; padding:0 14px; }
       .dash-input{ width: 46px; height: 56px; font-size: 1.75rem; border-radius: 14px; }
       .speaker-big{ width: 82px; height: 82px; font-size: 2.2rem; }
       .progress-card{ padding: 10px 10px; }
+      .badge{ width: 68px; }
     }
   </style>
 </head>
@@ -644,11 +817,17 @@
         Spelling Bee • Grades 1–3
         <span class="bee">🐝</span>
       </div>
+      <div class="header-stats">
+        <div class="stat-chip streak" id="streakChip">🔥 <span class="n" id="streakCount">0</span> day streak</div>
+        <div class="stat-chip stars">⭐ <span class="n" id="totalStarsCount">0</span> total stars</div>
+        <div class="stat-chip" id="masteredChip">✅ <span class="n" id="masteredCount">0</span> words mastered</div>
+      </div>
     </div>
 
     <div class="tabs">
       <button class="pill active" id="tabStudy" data-tab="study">📖 Study</button>
       <button class="pill" id="tabSpell" data-tab="spell">✍️ Spell</button>
+      <button class="pill" id="challengeToggle">⏱️ Challenge Mode</button>
     </div>
 
     <div class="grades">
@@ -663,6 +842,7 @@
         <div class="word-wrap">
           <div class="word" id="wordDisplay">PAT</div>
           <div class="hint" id="hintDisplay">tap lightly with your hand</div>
+          <div id="studyMasteredTag"></div>
         </div>
 
         <div class="row">
@@ -678,6 +858,11 @@
     <!-- SPELL -->
     <div id="spellPanel" class="panel hidden">
       <div class="panel-inner">
+        <div class="challenge-bar" id="challengeBar">
+          <div class="challenge-time" id="challengeTime">0:60</div>
+          <div class="challenge-score">✅ <span id="challengeScore">0</span> correct</div>
+        </div>
+
         <div class="spell-instruction">🔊 Listen carefully, then spell the word:</div>
 
         <div class="speaker-big" id="speakerBig" title="Click to hear the word again">🔊</div>
@@ -710,6 +895,12 @@
       <div class="stars" id="starsContainer" aria-label="Progress stars"></div>
     </div>
 
+    <!-- Achievements -->
+    <div class="badges-wrap">
+      <div class="badges-title">🏆 Achievements</div>
+      <div class="badges-grid" id="badgesGrid"></div>
+    </div>
+
     <!-- Word bank -->
     <div class="bank-wrap">
       <button class="toggle" id="toggleWordList">📋 show word bank</button>
@@ -720,6 +911,8 @@
 
     <div class="footer">🐝 Study hard, spell well!</div>
   </div>
+
+  <div class="toast" id="toast">🏆 Achievement unlocked!</div>
 
   <script>
     (function () {
@@ -1050,12 +1243,194 @@
         });
       }
 
+      // ---------- Persistent stats (per-viewer, localStorage) ----------
+      const STORAGE_KEY = "spellingBeeStats_v1";
+      const TOTAL_WORDS = WORDS[1].length + WORDS[2].length + WORDS[3].length;
+
+      function todayStr() {
+        return new Date().toISOString().slice(0, 10);
+      }
+
+      function defaultStats() {
+        return {
+          mastered: { 1: [], 2: [], 3: [] },
+          totalStars: 0,
+          streak: { count: 0, lastDate: null },
+          badges: [],
+          bestChallengeScore: 0
+        };
+      }
+
+      function loadStats() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return defaultStats();
+          const parsed = JSON.parse(raw);
+          const d = defaultStats();
+          return Object.assign(d, parsed, {
+            mastered: Object.assign(d.mastered, parsed.mastered || {})
+          });
+        } catch (e) {
+          return defaultStats();
+        }
+      }
+
+      function saveStats() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
+        } catch (e) { /* storage unavailable, continue silently */ }
+      }
+
+      let stats = loadStats();
+
+      const BADGE_DEFS = [
+        { id: "first5",    icon: "🌱", label: "First 5 Words",   test: s => totalMastered(s) >= 5 },
+        { id: "25words",   icon: "🐝", label: "25 Words",        test: s => totalMastered(s) >= 25 },
+        { id: "75words",   icon: "🎯", label: "75 Words",        test: s => totalMastered(s) >= 75 },
+        { id: "150words",  icon: "🏅", label: "150 Words",       test: s => totalMastered(s) >= 150 },
+        { id: "allwords",  icon: "👑", label: "Spelling Champ",  test: s => totalMastered(s) >= TOTAL_WORDS },
+        { id: "grade1",    icon: "1️⃣", label: "Grade 1 Master",  test: s => (s.mastered[1] || []).length >= WORDS[1].length },
+        { id: "grade2",    icon: "2️⃣", label: "Grade 2 Master",  test: s => (s.mastered[2] || []).length >= WORDS[2].length },
+        { id: "grade3",    icon: "3️⃣", label: "Grade 3 Master",  test: s => (s.mastered[3] || []).length >= WORDS[3].length },
+        { id: "streak3",   icon: "🔥", label: "3 Day Streak",    test: s => s.streak.count >= 3 },
+        { id: "streak7",   icon: "⚡", label: "7 Day Streak",    test: s => s.streak.count >= 7 },
+        { id: "challenge10", icon: "⏱️", label: "Challenge Pro", test: s => s.bestChallengeScore >= 10 }
+      ];
+
+      function totalMastered(s) {
+        return (s.mastered[1] || []).length + (s.mastered[2] || []).length + (s.mastered[3] || []).length;
+      }
+
+      function markMastered(grade, word) {
+        const key = word.toUpperCase();
+        if (!stats.mastered[grade]) stats.mastered[grade] = [];
+        if (!stats.mastered[grade].includes(key)) {
+          stats.mastered[grade].push(key);
+          stats.totalStars += 1;
+        }
+        saveStats();
+        checkBadges();
+        updateHeaderStats();
+        updateCountBadges();
+      }
+
+      function checkBadges() {
+        let newlyEarned = null;
+        BADGE_DEFS.forEach(def => {
+          const already = stats.badges.includes(def.id);
+          if (!already && def.test(stats)) {
+            stats.badges.push(def.id);
+            newlyEarned = def;
+          }
+        });
+        if (newlyEarned) {
+          saveStats();
+          showToast(`${newlyEarned.icon} Achievement unlocked: ${newlyEarned.label}!`);
+        }
+        renderBadges();
+      }
+
+      function renderBadges() {
+        badgesGrid.innerHTML = "";
+        BADGE_DEFS.forEach(def => {
+          const earned = stats.badges.includes(def.id);
+          const el = document.createElement("div");
+          el.className = "badge" + (earned ? " earned" : "");
+          el.innerHTML = `<span class="icon">${def.icon}</span><span class="label">${def.label}</span>`;
+          badgesGrid.appendChild(el);
+        });
+      }
+
+      function updateStreakOnLoad() {
+        const today = todayStr();
+        if (stats.streak.lastDate === today) {
+          // already counted today
+        } else {
+          const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+          if (stats.streak.lastDate === yesterday) {
+            stats.streak.count += 1;
+          } else {
+            stats.streak.count = 1;
+          }
+          stats.streak.lastDate = today;
+          saveStats();
+        }
+        checkBadges();
+      }
+
+      function updateHeaderStats() {
+        streakCountEl.textContent = stats.streak.count;
+        totalStarsCountEl.textContent = stats.totalStars;
+        masteredCountEl.textContent = `${totalMastered(stats)}/${TOTAL_WORDS}`;
+      }
+
+      // ---------- Sound effects (Web Audio, no external files) ----------
+      let audioCtx = null;
+      function getAudioCtx() {
+        try {
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (audioCtx.state === "suspended") audioCtx.resume();
+          return audioCtx;
+        } catch (e) { return null; }
+      }
+
+      function playTone(freq, duration, delay, type) {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        try {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = type || "sine";
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.0001, ctx.currentTime + delay);
+          gain.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + delay + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + duration);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + delay);
+          osc.stop(ctx.currentTime + delay + duration + 0.05);
+        } catch (e) { /* ignore */ }
+      }
+
+      function playCorrectChime() {
+        playTone(523.25, 0.14, 0, "triangle");
+        playTone(659.25, 0.14, 0.12, "triangle");
+        playTone(783.99, 0.22, 0.24, "triangle");
+      }
+
+      function playWrongChime() {
+        playTone(220, 0.18, 0, "sawtooth");
+        playTone(185, 0.22, 0.14, "sawtooth");
+      }
+
+      function playBadgeChime() {
+        playTone(659.25, 0.12, 0, "sine");
+        playTone(783.99, 0.12, 0.1, "sine");
+        playTone(987.77, 0.26, 0.2, "sine");
+      }
+
+      // ---------- Toast ----------
+      let toastTimer = null;
+      function showToast(text) {
+        toastEl.textContent = text;
+        toastEl.classList.add("show");
+        playBadgeChime();
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove("show"), 3200);
+      }
+
       // State
       let currentGrade = 1;
       let currentIndex = 0;
       let wordsList = [];
       let shuffled = false;
       let currentTab = "study";
+
+      // Challenge mode state
+      let challengeActive = false;
+      let challengeTimeLeft = 60;
+      let challengeScore = 0;
+      let challengeTimerId = null;
 
       // Speech
       let preferredVoice = null;
@@ -1070,6 +1445,7 @@
 
       const wordDisplay = document.getElementById("wordDisplay");
       const hintDisplay = document.getElementById("hintDisplay");
+      const studyMasteredTag = document.getElementById("studyMasteredTag");
       const speakBtn = document.getElementById("speakBtn");
       const prevBtn = document.getElementById("prevBtn");
       const nextBtn = document.getElementById("nextBtn");
@@ -1095,6 +1471,18 @@
       const toggleWordList = document.getElementById("toggleWordList");
       const wordBank = document.getElementById("wordBank");
       const wordBankGrid = document.getElementById("wordBankGrid");
+
+      const challengeToggle = document.getElementById("challengeToggle");
+      const challengeBar = document.getElementById("challengeBar");
+      const challengeTimeEl = document.getElementById("challengeTime");
+      const challengeScoreEl = document.getElementById("challengeScore");
+
+      const streakChip = document.getElementById("streakChip");
+      const streakCountEl = document.getElementById("streakCount");
+      const totalStarsCountEl = document.getElementById("totalStarsCount");
+      const masteredCountEl = document.getElementById("masteredCount");
+      const badgesGrid = document.getElementById("badgesGrid");
+      const toastEl = document.getElementById("toast");
 
       const countBadges = {
         1: document.getElementById("count1"),
@@ -1129,12 +1517,20 @@
         }
       }
 
+      function isWordMastered(grade, word) {
+        return (stats.mastered[grade] || []).includes(word.toUpperCase());
+      }
+
       function renderWord() {
         const item = wordsList[currentIndex];
         if (!item) return;
 
         wordDisplay.textContent = item.word;
         hintDisplay.textContent = item.hint;
+
+        studyMasteredTag.innerHTML = isWordMastered(currentGrade, item.word)
+          ? `<span class="mastered-tag">✅ Mastered</span>`
+          : "";
 
         // Trigger "pop" animation
         wordDisplay.classList.remove("word");
@@ -1150,14 +1546,13 @@
         wordBankGrid.innerHTML = "";
         wordsList.forEach(item => {
           const span = document.createElement("span");
-          span.className = "word-chip";
+          span.className = "word-chip" + (isWordMastered(currentGrade, item.word) ? " done" : "");
           span.textContent = item.word;
           wordBankGrid.appendChild(span);
         });
       }
 
       function toggleWordBank() {
-        const isOpen = wordBank.classList.contains("open");
         wordBank.classList.toggle("open");
         toggleWordList.textContent = wordBank.classList.contains("open")
           ? "📋 hide word bank"
@@ -1531,12 +1926,23 @@
           for (const inp of dashRow.children) inp.classList.add("correct");
           feedback.textContent = "🌟 Brilliant!";
           feedback.className = "feedback correct";
+          playCorrectChime();
           speakPraise("Brilliant!");
           launchConfetti();
+          markMastered(currentGrade, item.word);
+          buildWordBank();
+          studyMasteredTag.innerHTML = `<span class="mastered-tag">✅ Mastered</span>`;
+
+          if (challengeActive) {
+            challengeScore += 1;
+            challengeScoreEl.textContent = challengeScore;
+            setTimeout(() => { if (challengeActive) { nextWord(); speakWordClearly(); } }, 700);
+          }
         } else {
           for (const inp of dashRow.children) inp.classList.add("wrong");
           feedback.textContent = "💪 Try again!";
           feedback.className = "feedback wrong";
+          playWrongChime();
           speakPraise("You can do it. Try again.");
           setTimeout(() => {
             for (const inp of dashRow.children) inp.classList.remove("wrong");
@@ -1559,6 +1965,62 @@
         speakWordClearly();
       }
 
+      // ---------- Challenge Mode ----------
+      function startChallenge() {
+        challengeActive = true;
+        challengeTimeLeft = 60;
+        challengeScore = 0;
+        challengeToggle.textContent = "⏹️ Stop Challenge";
+        challengeToggle.classList.add("challenge-on");
+        challengeBar.classList.add("active");
+        challengeScoreEl.textContent = "0";
+        updateChallengeTimeDisplay();
+
+        if (currentTab !== "spell") switchTab("spell");
+        shuffleWords();
+        speakWordClearly();
+
+        clearInterval(challengeTimerId);
+        challengeTimerId = setInterval(() => {
+          challengeTimeLeft -= 1;
+          updateChallengeTimeDisplay();
+          if (challengeTimeLeft <= 0) endChallenge();
+        }, 1000);
+      }
+
+      function updateChallengeTimeDisplay() {
+        const m = Math.floor(challengeTimeLeft / 60);
+        const s = challengeTimeLeft % 60;
+        challengeTimeEl.textContent = `${m}:${String(s).padStart(2, "0")}`;
+        challengeTimeEl.classList.toggle("low", challengeTimeLeft <= 10);
+      }
+
+      function endChallenge() {
+        clearInterval(challengeTimerId);
+        challengeActive = false;
+        challengeToggle.textContent = "⏱️ Challenge Mode";
+        challengeToggle.classList.remove("challenge-on");
+        challengeBar.classList.remove("active");
+
+        if (challengeScore > stats.bestChallengeScore) {
+          stats.bestChallengeScore = challengeScore;
+        }
+        saveStats();
+        checkBadges();
+
+        feedback.textContent = `⏱️ Time's up! You spelled ${challengeScore} word${challengeScore === 1 ? "" : "s"} correctly!`;
+        feedback.className = "feedback correct";
+        showToast(`⏱️ Challenge over — ${challengeScore} correct! Best: ${stats.bestChallengeScore}`);
+      }
+
+      function toggleChallenge() {
+        if (challengeActive) {
+          endChallenge();
+        } else {
+          startChallenge();
+        }
+      }
+
       // Tab switching
       function switchTab(tab) {
         currentTab = tab;
@@ -1578,7 +2040,8 @@
 
       function updateCountBadges() {
         for (const g of [1, 2, 3]) {
-          countBadges[g].textContent = WORDS[g].length;
+          const masteredN = (stats.mastered[g] || []).length;
+          countBadges[g].textContent = `${WORDS[g].length} (${masteredN}✓)`;
         }
       }
 
@@ -1600,6 +2063,11 @@
       function init() {
         buildStars();
         updateCountBadges();
+        updateHeaderStats();
+        renderBadges();
+        updateStreakOnLoad();
+        updateHeaderStats();
+
         loadVoices();
         if ("speechSynthesis" in window) {
           window.speechSynthesis.onvoiceschanged = loadVoices;
@@ -1609,11 +2077,13 @@
 
         loadGrade(1);
 
-        tabStudy.addEventListener("click", () => switchTab("study"));
+        tabStudy.addEventListener("click", () => { if (!challengeActive) switchTab("study"); });
         tabSpell.addEventListener("click", () => switchTab("spell"));
+        challengeToggle.addEventListener("click", toggleChallenge);
 
         gradeBtns.forEach(btn => {
           btn.addEventListener("click", (e) => {
+            if (challengeActive) return;
             const g = parseInt(e.currentTarget.dataset.grade, 10);
             if (g === currentGrade) return;
             loadGrade(g);
@@ -1631,12 +2101,12 @@
         spellHintBtn.addEventListener("click", showSpellHint);
         spellCheckBtn.addEventListener("click", checkSpelling);
 
-        spellPrevBtn.addEventListener("click", prevWord);
+        spellPrevBtn.addEventListener("click", () => { if (!challengeActive) prevWord(); });
         spellNextBtn.addEventListener("click", () => {
           nextWord();
           setTimeout(() => speakWordClearly(), 250);
         });
-        spellResetBtn.addEventListener("click", resetProgress);
+        spellResetBtn.addEventListener("click", () => { if (!challengeActive) resetProgress(); });
 
         toggleWordList.addEventListener("click", toggleWordBank);
 
@@ -1657,9 +2127,9 @@
               e.preventDefault();
               speakStudyWord();
             }
-            if (e.code === "ArrowLeft" && !isTyping) { e.preventDefault(); prevWord(); }
-            if (e.code === "ArrowRight" && !isTyping) { e.preventDefault(); nextWord(); }
-            if (e.code === "Home") { e.preventDefault(); resetProgress(); }
+            if (e.code === "ArrowLeft" && !isTyping && !challengeActive) { e.preventDefault(); prevWord(); }
+            if (e.code === "ArrowRight" && !isTyping && !challengeActive) { e.preventDefault(); nextWord(); }
+            if (e.code === "Home" && !challengeActive) { e.preventDefault(); resetProgress(); }
           }
         });
       }
